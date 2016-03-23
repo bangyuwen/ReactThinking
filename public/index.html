@@ -38,9 +38,13 @@
       var ProductTable = React.createClass({
         render: function() {
           var rows = [];
+          var lastCategory = null;
           var productNodes = this.props.products.map(function(product) {
-              rows.push(<ProductCategoryRaw category={product.category} key={product.name} />);
-              rows.push(<ProductRaw name={product.name} price={product.price} key={product.price} />);
+            if( product.category !== lastCategory){
+              rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
+            }
+              rows.push(<ProductRow product={product} key={product.name} />);
+              lastCategory = product.category;
           });
           return(
             <table>
@@ -52,7 +56,7 @@
         }
       });
 
-      var ProductCategoryRaw = React.createClass({
+      var ProductCategoryRow = React.createClass({
         render: function() {
           return(
             <tr>
@@ -62,12 +66,17 @@
         }
       });
 
-    var ProductRaw = React.createClass({
+    var ProductRow = React.createClass({
         render: function() {
+          var name = this.props.product.stocked ?
+            this.props.product.name :
+            <span style={{color:'red'}}>
+              {this.props.product.name}
+            </span>;
           return(
             <tr>
-              <th>{this.props.name}</th>
-              <th>{this.props.price}</th>
+              <th>{name}</th>
+              <th>{this.props.product.price}</th>
             </tr>
           );
         }
