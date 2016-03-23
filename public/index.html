@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React Tutorial</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script type="text/babel">
+      var FilterableProductTable = React.createClass({
+        render: function() {
+          return(
+            <div>
+              <SearchBar />
+              <ProductTable products={this.props.products} />
+            </div>
+          );
+        }
+      });
+
+      var SearchBar = React.createClass({
+        render: function() {
+          return(
+            <div>
+              SearchBar
+            </div>
+          );
+        }
+      });
+
+      var ProductTable = React.createClass({
+        render: function() {
+          var rows = [];
+          var productNodes = this.props.products.map(function(product) {
+            return (
+              [<ProductCategoryRaw category={product.category} key={product.category} />,
+              <ProductRaw name={product.name} price={product.price} key={product.name} />]
+            );
+          });
+          return(
+            <table>
+              <tbody>
+                {productNodes}
+              </tbody>
+            </table>
+          );
+        }
+      });
+
+      var ProductCategoryRaw = React.createClass({
+        render: function() {
+          return(
+            <tr>
+              <th colSpan="2">{this.props.category}</th>
+            </tr>
+          );
+        }
+      });
+
+    var ProductRaw = React.createClass({
+        render: function() {
+          return(
+            <tr>
+              <th>{this.props.name}</th>
+              <th>{this.props.price}</th>
+            </tr>
+          );
+        }
+      });
+
+      var PRODUCTS = [
+        {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+        {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+        {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+        {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+        {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+        {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+      ];
+
+      ReactDOM.render(
+        <FilterableProductTable products={PRODUCTS}/>,
+        document.getElementById('container')
+      );
+
+    </script>
+  </body>
+</html>
